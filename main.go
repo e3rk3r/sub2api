@@ -47,12 +47,13 @@ func main() {
 	log.Printf("Starting %s on %s", appName, addr)
 
 	// Added read/write timeouts to avoid hanging connections on my local setup
+	// Bumped IdleTimeout to 120s since I often leave this running in the background
 	server := &http.Server{
 		Addr:         addr,
 		Handler:      mux,
 		ReadTimeout:  15 * time.Second,
 		WriteTimeout: 15 * time.Second,
-		IdleTimeout:  60 * time.Second,
+		IdleTimeout:  120 * time.Second,
 	}
 
 	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
