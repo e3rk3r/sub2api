@@ -16,10 +16,7 @@ const (
 	defaultPort    = 8080
 	defaultHost    = "127.0.0.1" // changed from 0.0.0.0 to localhost-only for personal use
 	appName        = "sub2api"
-	appVersion     = "dev"
-)
-
-func main() {
+	appVersion     = "devfunc main() {
 	var (
 		host    string
 		port    int
@@ -48,10 +45,11 @@ func main() {
 
 	// Added read/write timeouts to avoid hanging connections on my local setup
 	// Bumped IdleTimeout to 120s since I often leave this running in the background
+	// Reduced ReadTimeout to 10s — 15s felt too generous for local-only use
 	server := &http.Server{
 		Addr:         addr,
 		Handler:      mux,
-		ReadTimeout:  15 * time.Second,
+		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 15 * time.Second,
 		IdleTimeout:  120 * time.Second,
 	}
