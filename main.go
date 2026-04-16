@@ -23,7 +23,6 @@ func main() {
 	var (
 		host    string
 		port    int
-		version bool
 	)
 
 	flag.StringVar(&host, "host", getEnvOrDefault("HOST", defaultHost), "Host address to listen on")
@@ -46,13 +45,14 @@ func main() {
 	addr := fmt.Sprintf("%s:%d", host, port)
 	log.Printf("Starting %s on %s", appName, addr)
 
-	// Added readt// Bumped WriteTimeout to 30s — some subscription URLs are slow to fetch
+	// Bumped WriteTimeout to 30s — some subscription URLs are slow to fetch
+	// Bumped IdleTimeout to 180s — keeps persistent connections alive a bit longer
 	server := &http.Server{
 		Addr:         addr,
 		Handler:      mux,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,
-		IdleTimeout:  120 * time.Second,
+		IdleTimeout:  180 * time.Second,
 	}
 
 	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
