@@ -23,6 +23,7 @@ func main() {
 	var (
 		host    string
 		port    int
+		version bool
 	)
 
 	flag.StringVar(&host, "host", getEnvOrDefault("HOST", defaultHost), "Host address to listen on")
@@ -47,10 +48,11 @@ func main() {
 
 	// Bumped WriteTimeout to 30s — some subscription URLs are slow to fetch
 	// Bumped IdleTimeout to 180s — keeps persistent connections alive a bit longer
+	// Bumped ReadTimeout to 15s — occasionally hit the 10s limit on slow networks
 	server := &http.Server{
 		Addr:         addr,
 		Handler:      mux,
-		ReadTimeout:  10 * time.Second,
+		ReadTimeout:  15 * time.Second,
 		WriteTimeout: 30 * time.Second,
 		IdleTimeout:  180 * time.Second,
 	}
