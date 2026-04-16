@@ -16,7 +16,10 @@ const (
 	defaultPort    = 8080
 	defaultHost    = "127.0.0.1" // changed from 0.0.0.0 to localhost-only for personal use
 	appName        = "sub2api"
-	appVersion     = "devfunc main() {
+	appVersion     = "dev"
+)
+
+func main() {
 	var (
 		host    string
 		port    int
@@ -43,14 +46,12 @@ const (
 	addr := fmt.Sprintf("%s:%d", host, port)
 	log.Printf("Starting %s on %s", appName, addr)
 
-	// Added read/write timeouts to avoid hanging connections on my local setup
-	// Bumped IdleTimeout to 120s since I often leave this running in the background
-	// Reduced ReadTimeout to 10s — 15s felt too generous for local-only use
+	// Added readt// Bumped WriteTimeout to 30s — some subscription URLs are slow to fetch
 	server := &http.Server{
 		Addr:         addr,
 		Handler:      mux,
 		ReadTimeout:  10 * time.Second,
-		WriteTimeout: 15 * time.Second,
+		WriteTimeout: 30 * time.Second,
 		IdleTimeout:  120 * time.Second,
 	}
 
